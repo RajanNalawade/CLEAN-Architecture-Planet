@@ -1,0 +1,38 @@
+package com.example.planetcleanarchitecture.data_layer.data_sources.remote
+
+import android.os.SystemClock
+import com.example.planetcleanarchitecture.data_layer.repositories.Planet
+import kotlinx.coroutines.delay
+import java.util.UUID
+import javax.inject.Inject
+
+class ApiRemoteDataSource @Inject constructor() : RemoteDataSource {
+    private val planetsCache = ArrayList<Planet>()
+    private var lastDelay = 0L
+
+    override suspend fun getPlanets(): List<Planet> {
+        simulateApiDelay()
+        return planetsCache
+    }
+
+    override suspend fun addPlanet(planet: Planet): Planet {
+        simulateApiDelay()
+        val planetToAdd =
+            if (planet.id == null) planet.copy(id = UUID.randomUUID().toString()) else planet
+        planetsCache.add(planetToAdd)
+        return planetToAdd
+    }
+
+    override suspend fun deletePlanet(planetId: String) {
+        simulateApiDelay()
+        planetsCache.removeIf { it.id == planetId }
+    }
+
+    private suspend fun simulateApiDelay() {
+        //(this logic is purely to avoid 3x simulated delays when adding the sample planets)
+        if (SystemClock.uptimeMillis() > lastDelay + 500) {
+            delay(2000)
+            lastDelay = SystemClock.uptimeMillis()
+        }
+    }
+}

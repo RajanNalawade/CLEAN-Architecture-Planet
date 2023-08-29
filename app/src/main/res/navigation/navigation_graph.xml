@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/planet_list_screen">
+
+    <fragment
+        android:id="@+id/planet_list_screen"
+        android:name="com.example.planetcleanarchitecture.ui_layer.planet_list.PlanetListScreen"
+        android:label="@string/list_planet"
+        tools:layout="@layout/fragment_planet_list_screen">
+
+        <action android:id="@+id/action_planet_list_screen_to_add_edit_planet"
+            app:destination="@+id/add_edit_planet"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_edit_planet"
+        android:name="com.example.planetcleanarchitecture.ui_layer.add_planet.AddEditPlanet"
+        android:label="@string/add_planet"
+        tools:layout="@layout/fragment_add_edit_planet">
+
+        <action android:id="@+id/action_add_edit_planet_to_planet_list_screen"
+            app:destination="@id/planet_list_screen"/>
+
+    </fragment>
+
+</navigation>
